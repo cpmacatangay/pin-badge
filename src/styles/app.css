@@ -987,11 +987,13 @@ input[type="color"] {
 }
 
 .preview-note {
-  max-width: 280px;
+  max-width: none;
+  flex: none;
   color: var(--muted);
   font-size: 11px;
   line-height: 1.45;
   text-align: right;
+  white-space: nowrap;
 }
 
 /* ---------- Warnings ---------- */
@@ -1293,8 +1295,10 @@ input[type="color"] {
   }
 
   .preview-note {
-    max-width: none;
+    max-width: 100%;
+    overflow: hidden;
     text-align: left;
+    text-overflow: ellipsis;
   }
 
   .field-row,
