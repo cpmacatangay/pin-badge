@@ -137,7 +137,7 @@ This is a static Vite build. Production runs on Vercel at
 - Framework preset: **Vite**
 - Build command: `npm run build`
 - Output directory: `dist`
-- Node: `24.x`
+- Node: `26.x`
 - Production branch: `master`
 
 Pushes to `master` deploy automatically. Security headers, including CSP, live in
