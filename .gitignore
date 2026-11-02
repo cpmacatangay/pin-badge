@@ -1,0 +1,15 @@
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+.vite/
+.playwright-mcp/
+*.local
+.DS_Store
+Thumbs.db
+
+# Agent and process scaffolding (kept locally, not part of the product)
+.opencode/
+.specify/
+specs/
