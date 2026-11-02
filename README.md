@@ -127,7 +127,9 @@ fetched at runtime; Vercel Web Analytics uses Vercel's first-party endpoint in p
 ## Browser support
 
 Current Chrome, Edge, Firefox, and Safari. Desktop is the primary experience; the layout
-collapses to a single column on tablets and phones.
+collapses to a single column on tablets and phones. On phones, a sticky **Set up /
+Preview** switch keeps the badge preview one tap away; controls use 44px touch targets and
+16px inputs to avoid iOS focus zoom.
 
 ## Deploy
 

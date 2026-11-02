@@ -31,7 +31,10 @@ export function AppHeader({
           <circle cx="12" cy="12" r="2.1" fill="var(--surface)" />
         </svg>
         <div className="brand-copy">
-          <span className="brand-name">Pin Badge Studio</span>
+          <span className="brand-name">
+            <span className="brand-name-full">Pin Badge Studio</span>
+            <span className="brand-name-short">Pin Badge</span>
+          </span>
           <span className="brand-scope">Local print studio</span>
         </div>
       </div>

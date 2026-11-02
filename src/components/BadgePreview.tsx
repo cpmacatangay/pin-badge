@@ -115,26 +115,26 @@ export function BadgePreview({ dpi }: BadgePreviewProps) {
   return (
     <section className="preview-block" aria-labelledby="badge-preview-title">
       <div className="block-head">
-        <h3 id="badge-preview-title">Badge</h3>
-        <div className="block-head-right">
+        <div className="block-head-title">
+          <h3 id="badge-preview-title">Badge</h3>
           <span className="dpi-pill" data-low={lowDpi}>
             <span className="status-dot" aria-hidden="true" />
             {formatDpi(dpi)}
           </span>
-          <Segmented
-            value={mode}
-            options={MODE_OPTIONS}
-            onChange={setMode}
-            ariaLabel="Badge preview mode"
-          />
         </div>
+        <Segmented
+          value={mode}
+          options={MODE_OPTIONS}
+          onChange={setMode}
+          ariaLabel="Badge preview mode"
+        />
       </div>
 
       <div className="badge-stage">
         <div className="badge-frame">
           <canvas
             ref={canvasRef}
-            className="badge-canvas"
+            className={artwork ? "badge-canvas is-draggable" : "badge-canvas"}
             aria-label={
               artwork
                 ? "Badge artwork preview. Drag to reposition the design."

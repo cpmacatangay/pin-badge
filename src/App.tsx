@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { AppHeader } from "./components/AppHeader";
 import { ArtworkPanel } from "./components/ArtworkPanel";
@@ -6,6 +6,7 @@ import { BadgePanel } from "./components/BadgePanel";
 import { BadgePreview } from "./components/BadgePreview";
 import { ExportPanel } from "./components/ExportPanel";
 import { LayoutPanel } from "./components/LayoutPanel";
+import { Segmented } from "./components/Segmented";
 import { SheetPreview } from "./components/SheetPreview";
 import { Warnings } from "./components/Warnings";
 import { renderDisc, discToPngBytes } from "./lib/compose";
@@ -16,6 +17,13 @@ import { yieldToBrowser } from "./lib/timing";
 import { effectiveDpi, canExport, validateStudio } from "./lib/validation";
 import { formatNumber } from "./lib/units";
 import { useStudio } from "./state/store";
+
+type Pane = "setup" | "preview";
+
+const PANE_OPTIONS: readonly { value: Pane; label: string }[] = [
+  { value: "setup", label: "Set up" },
+  { value: "preview", label: "Preview" },
+];
 
 export default function App() {
   const badge = useStudio((state) => state.badge);
@@ -28,6 +36,33 @@ export default function App() {
   const setExportError = useStudio((state) => state.setExportError);
 
   const [pageIndex, setPageIndex] = useState(0);
+  const [pane, setPane] = useState<Pane>("setup");
+  const paneScroll = useRef<Record<Pane, number>>({ setup: 0, preview: 0 });
+  const restorePaneScroll = useRef(false);
+
+  function changePane(next: Pane) {
+    if (next === pane) return;
+    paneScroll.current[pane] = window.scrollY;
+    restorePaneScroll.current = true;
+    setPane(next);
+  }
+
+  useLayoutEffect(() => {
+    if (!restorePaneScroll.current) return;
+    restorePaneScroll.current = false;
+    window.scrollTo({ top: paneScroll.current[pane] });
+  }, [pane]);
+
+  useEffect(() => {
+    if (!exportError) return;
+    paneScroll.current.setup = 0;
+    setPane("setup");
+    const frame = requestAnimationFrame(() => {
+      window.scrollTo({ top: 0 });
+      document.querySelector<HTMLElement>(".controls")?.scrollTo({ top: 0 });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [exportError]);
 
   const effective = useMemo(
     () => computeEffectiveLayout(layout, page, badge),
@@ -162,7 +197,16 @@ export default function App() {
       />
 
       <main className="sheet">
-        <div className="workspace">
+        <div className="pane-switch">
+          <Segmented
+            value={pane}
+            options={PANE_OPTIONS}
+            onChange={changePane}
+            ariaLabel="Mobile view"
+          />
+        </div>
+
+        <div className="workspace" data-pane={pane}>
           <div className="controls">
             <div className="panel-title">
               <div>
@@ -173,6 +217,26 @@ export default function App() {
                 </p>
               </div>
               <span className="stamp">Saved locally</span>
+            </div>
+
+            <div className="page-status">
+              {exportError ? (
+                <div className="warning error export-error" role="alert">
+                  <span className="warning-dot" aria-hidden="true" />
+                  <div>
+                    <strong>PDF could not be created.</strong>
+                    <span>{exportError}</span>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn ghost"
+                    onClick={() => setExportError(null)}
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              ) : null}
+              <Warnings warnings={warnings} />
             </div>
 
             <BadgePanel />
@@ -190,29 +254,10 @@ export default function App() {
               <span className="stamp">{layout.dpi} DPI</span>
             </div>
 
-            {exportError ? (
-              <div className="warning error export-error" role="alert">
-                <span className="warning-dot" aria-hidden="true" />
-                <div>
-                  <strong>PDF could not be created.</strong>
-                  <span>{exportError}</span>
-                </div>
-                <button
-                  type="button"
-                  className="btn ghost"
-                  onClick={() => setExportError(null)}
-                >
-                  Dismiss
-                </button>
-              </div>
-            ) : null}
-
             <div className="preview-grid">
               <BadgePreview dpi={dpi} />
               <SheetPreview pages={pages} pageIndex={pageIndex} onPageChange={setPageIndex} />
             </div>
-
-            <Warnings warnings={warnings} />
           </div>
         </div>
       </main>

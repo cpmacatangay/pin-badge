@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { renderDisc } from "../lib/compose";
 import { pageSizeMm } from "../lib/layout";
 import type { PageLayout } from "../lib/types";
@@ -22,12 +22,20 @@ export function SheetPreview({ pages, pageIndex, onPageChange }: SheetPreviewPro
 
   const paper = pageSizeMm(page);
 
+  // The badge preview stays live during a drag; the small sheet thumbnails can
+  // settle a beat later instead of re-encoding the disc on every pointer move.
+  const [settledTransform, setSettledTransform] = useState(transform);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setSettledTransform(transform), 120);
+    return () => window.clearTimeout(timer);
+  }, [transform]);
+
   const discUrl = useMemo(() => {
     if (!artwork) return null;
     try {
       const disc = renderDisc({
         artwork,
-        transform,
+        transform: settledTransform,
         cutMm: badge.cutMm,
         background,
         sizePx: 512,
@@ -36,7 +44,7 @@ export function SheetPreview({ pages, pageIndex, onPageChange }: SheetPreviewPro
     } catch {
       return null;
     }
-  }, [artwork, transform, badge.cutMm, background]);
+  }, [artwork, settledTransform, badge.cutMm, background]);
 
   const safeIndex = pages.length > 0 ? Math.min(pageIndex, pages.length - 1) : 0;
   const current = pages[safeIndex];
