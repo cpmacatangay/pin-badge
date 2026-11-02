@@ -1,6 +1,7 @@
 import { BADGE_PRESETS } from "../lib/presets";
 import { formatNumber } from "../lib/units";
 import { useStudio } from "../state/store";
+import { ResetIcon } from "./Icons";
 import { NumberField } from "./NumberField";
 
 export function BadgePanel() {
@@ -82,7 +83,7 @@ export function BadgePanel() {
             min={1}
             step={0.5}
             suffix="mm"
-            hint="Measure your press template if 54 mm does not fit. Some 44 mm presses use 52 mm."
+            hint="Some 44 mm presses use 52 mm. Measure your template."
           />
           <NumberField
             id="safe-inset"
@@ -97,8 +98,8 @@ export function BadgePanel() {
         </div>
         <div className="inline-actions">
           <span className="field-hint">Preset values can be restored at any time.</span>
-          <button type="button" className="btn ghost" onClick={resetBadge}>
-            Restore preset
+          <button type="button" className="btn" onClick={resetBadge}>
+            <ResetIcon size={13} /> Restore preset
           </button>
         </div>
       </details>

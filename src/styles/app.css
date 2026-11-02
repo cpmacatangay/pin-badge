@@ -317,6 +317,11 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+  align-items: start;
+}
+
+.field > .segmented {
+  width: 100%;
 }
 
 .advanced {
@@ -339,6 +344,7 @@
 
 .inline-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
@@ -353,6 +359,10 @@
 
 .inline-input .input-shell {
   flex: 1;
+}
+
+.inline-input .btn {
+  height: 38px;
 }
 
 .input-shell {
@@ -677,7 +687,7 @@ input[type="range"] {
   margin-top: 2px;
 }
 
-.rotation-actions .btn.ghost:last-child {
+.rotation-actions .btn:last-child {
   margin-left: auto;
   display: inline-flex;
   align-items: center;

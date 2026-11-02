@@ -171,7 +171,7 @@ export function LayoutPanel({ effective, pageIndex, pageCount }: LayoutPanelProp
           min={0}
           step={0.5}
           suffix="mm"
-          hint="Space between cut circles."
+          hint="Space between cut circles on the sheet."
         />
       </div>
 

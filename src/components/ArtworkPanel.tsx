@@ -224,7 +224,7 @@ export function ArtworkPanel() {
             >
               ↻ 90°
             </button>
-            <button type="button" className="btn ghost" onClick={resetTransform}>
+            <button type="button" className="btn" onClick={resetTransform}>
               <ResetIcon size={13} /> Reset framing
             </button>
           </div>

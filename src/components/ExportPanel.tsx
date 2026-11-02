@@ -1,5 +1,6 @@
 import type { Dpi } from "../lib/types";
 import { resetAllSettings, useStudio } from "../state/store";
+import { ResetIcon } from "./Icons";
 import { Segmented } from "./Segmented";
 import { Toggle } from "./Toggle";
 
@@ -77,8 +78,8 @@ export function ExportPanel({ fileName }: ExportPanelProps) {
 
       <div className="inline-actions">
         <span className="field-hint">Preferences are saved on this device.</span>
-        <button type="button" className="btn ghost" onClick={resetAllSettings}>
-          Reset preferences
+        <button type="button" className="btn" onClick={resetAllSettings}>
+          <ResetIcon size={13} /> Reset preferences
         </button>
       </div>
     </section>
