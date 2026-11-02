@@ -5,8 +5,8 @@ A browser-based design and print-sheet generator for round pin badges. Choose 25
 custom paper, and export a millimetre-accurate PDF with optional cutting guides. Use the
 separate test print to verify the 100 mm calibration ruler and the cut circle.
 
-Artwork is processed entirely in the browser. There is no upload, no account, and no
-analytics.
+Artwork is processed entirely in the browser. There is no artwork upload or account.
+Vercel Web Analytics records anonymous page views in production; it never receives artwork.
 
 ## Features
 
@@ -71,8 +71,10 @@ printer driver scaling, so the ruler and test sheet exist to catch it.
 
 ## Privacy
 
-- No network requests after the app loads.
-- No server, database, or upload endpoint.
+- Artwork never leaves the device; there is no upload endpoint or server-side image processing.
+- Vercel Web Analytics records anonymous page views and Web Vitals in production. It has no access
+  to artwork or settings.
+- No accounts or database.
 - The uploaded image is decoded into browser memory and released when replaced or removed.
 - Only non-artwork settings are stored in `localStorage` under `pin-badge-studio/v1`.
 
@@ -119,8 +121,8 @@ reused for every slot. `pdf-lib` builds the page at the exact physical size; cut
 and the test-print ruler remain vector. The PDF module is loaded on demand so the
 initial app bundle stays small.
 
-IBM Plex Sans and IBM Plex Mono are bundled locally through Fontsource, so the app still
-makes no runtime network requests.
+IBM Plex Sans and IBM Plex Mono are bundled locally through Fontsource. No third-party assets are
+fetched at runtime; Vercel Web Analytics uses Vercel's first-party endpoint in production.
 
 ## Browser support
 

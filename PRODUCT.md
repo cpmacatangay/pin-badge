@@ -50,7 +50,8 @@ the artwork stays in the browser.
 ## Capabilities and Constraints
 
 - Static client-side web application built with React, TypeScript, and Vite. There is no backend,
-  account system, upload endpoint, or runtime network dependency.
+  account system, upload endpoint, or server-side image processing. Vercel Web Analytics records
+  anonymous page views in production; artwork is never uploaded.
 - Badge presets: 25 mm finished / 35 mm cut, and 44 mm finished / 54 mm cut. The cut diameter and
   safe inset are editable; some 44 mm presses use a 52 mm cut rather than 54 mm.
 - Paper: A4, US Letter, and custom sizes entered in millimetres, centimetres, or inches.
@@ -80,15 +81,17 @@ the artwork stays in the browser.
 - There are no customer testimonials, reviews, sales figures, press mentions, photographs of real
   badge runs, or client logos. Future work must not invent them.
 - The SVG design in the test fixture is sample test material, not a customer design.
-- The product's privacy claim is verifiable in the implementation: no upload endpoint and no
-  runtime network requests after the app loads.
+- The product's privacy claim is verifiable in the implementation: no upload endpoint, no
+  server-side image processing, and artwork never leaves the device. Vercel Web Analytics is the
+  only production page-view request and does not receive artwork.
 
 ## Product Principles
 
 1. **Print accuracy before features.** Every new capability must preserve exact millimetre output
    and remain testable against the 100 mm ruler and cut circle.
 2. **Privacy is part of the product.** Artwork stays on the device; do not add accounts, uploads, or
-   cloud processing without an explicit product decision.
+   cloud processing without an explicit product decision. Vercel Web Analytics is an explicit
+   exception limited to anonymous page views and must never receive artwork.
 3. **Explain the physical wrap.** Always distinguish the cut disc, finished face, and safe area so
    the user can predict what survives pressing.
 4. **Optimize for repeat batches.** Remember settings, make sheet filling fast, and keep multi-page
