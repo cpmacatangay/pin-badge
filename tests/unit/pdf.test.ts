@@ -1,4 +1,11 @@
-import { PDFDict, PDFDocument, PDFName } from "pdf-lib";
+import { inflateSync } from "node:zlib";
+import {
+  PDFArray,
+  PDFDict,
+  PDFDocument,
+  PDFName,
+  PDFRawStream,
+} from "pdf-lib";
 import { describe, expect, it } from "vitest";
 import { buildPages } from "../../src/lib/layout";
 import {
@@ -27,6 +34,44 @@ const layout: SheetLayout = { mode: "auto", rows: 3, cols: 5, copies: 20, dpi: 3
 
 async function load(bytes: Uint8Array) {
   return PDFDocument.load(bytes);
+}
+
+function pageContent(pdf: PDFDocument, pageIndex: number): string {
+  const page = pdf.getPage(pageIndex);
+  const contents = page.node.Contents();
+  const refs = contents instanceof PDFArray ? contents.asArray() : [contents];
+  let text = "";
+  for (const ref of refs) {
+    const stream = pdf.context.lookup(ref);
+    if (stream instanceof PDFRawStream) {
+      try {
+        text += inflateSync(Buffer.from(stream.getContents())).toString("latin1");
+      } catch {
+        text += Buffer.from(stream.getContents()).toString("latin1");
+      }
+    }
+  }
+  return text;
+}
+
+function longestHorizontalLinePt(text: string): number {
+  const lines = [
+    ...text.matchAll(
+      /(-?[\d.]+) (-?[\d.]+) m\n(?:-?[\d.]+ -?[\d.]+ m\n)*(-?[\d.]+) (-?[\d.]+) l/g,
+    ),
+  ].map((match) => ({
+    x1: Number(match[1]),
+    y1: Number(match[2]),
+    x2: Number(match[3]),
+    y2: Number(match[4]),
+  }));
+  const horizontal = lines.filter(
+    (line) => Math.abs(line.y1 - line.y2) < 0.01 && Math.abs(line.x2 - line.x1) > 100,
+  );
+  return horizontal.reduce(
+    (longest, line) => Math.max(longest, Math.abs(line.x2 - line.x1)),
+    0,
+  );
 }
 
 describe("sheet PDF", () => {
@@ -130,6 +175,28 @@ describe("sheet PDF", () => {
     const pdf = await load(bytes);
     expect(pdf.getPageCount()).toBe(1);
     expect(pdf.getPage(0).getWidth()).toBeCloseTo(595.2756, 3);
+  });
+
+  it("omits the calibration ruler from batch sheets and includes it on the test print", async () => {
+    const pages = buildPages({ ...layout, copies: 1 }, page, badge);
+    const batchBytes = await buildSheetPdf({
+      badge,
+      page,
+      guides: DEFAULT_GUIDES,
+      pages,
+      imagePng: PNG,
+    });
+    const batchPdf = await load(batchBytes);
+    expect(longestHorizontalLinePt(pageContent(batchPdf, 0))).toBeLessThan(200);
+
+    const testBytes = await buildTestSheetPdf({
+      badge,
+      page,
+      guides: DEFAULT_GUIDES,
+      imagePng: PNG,
+    });
+    const testPdf = await load(testBytes);
+    expect(longestHorizontalLinePt(pageContent(testPdf, 0))).toBeCloseTo(283.4646, 3);
   });
 
   it("rejects an empty page list", async () => {

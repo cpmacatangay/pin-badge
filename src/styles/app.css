@@ -1155,43 +1155,6 @@ input[type="color"] {
   border: 1px dashed rgba(196, 86, 47, 0.55);
 }
 
-.sheet-ruler {
-  position: absolute;
-  height: 0;
-  border-top: 1px solid rgba(35, 31, 26, 0.65);
-  pointer-events: none;
-}
-
-.sheet-ruler::before,
-.sheet-ruler::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 1px;
-  height: 7px;
-  background: rgba(35, 31, 26, 0.65);
-}
-
-.sheet-ruler::before {
-  left: 0;
-}
-
-.sheet-ruler::after {
-  right: 0;
-}
-
-.sheet-ruler span {
-  position: absolute;
-  left: 50%;
-  bottom: 3px;
-  color: rgba(35, 31, 26, 0.62);
-  font-size: 6px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  transform: translateX(-50%);
-  white-space: nowrap;
-}
-
 .sheet-page-label {
   position: absolute;
   right: 2.4%;

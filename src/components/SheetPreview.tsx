@@ -48,9 +48,6 @@ export function SheetPreview({ pages, pageIndex, onPageChange }: SheetPreviewPro
       : 1;
   const faceInset = ((1 - faceRatio) / 2) * 100;
   const safeInset = ((1 - safeRatio) / 2) * 100;
-  const rulerWidth = (100 / paper.widthMm) * 100;
-  const rulerLeft = ((paper.widthMm - 100) / 2 / paper.widthMm) * 100;
-  const rulerBottom = (6 / paper.heightMm) * 100;
 
   return (
     <section className="sheet-card" aria-labelledby="sheet-preview-title">
@@ -128,20 +125,6 @@ export function SheetPreview({ pages, pageIndex, onPageChange }: SheetPreviewPro
                   </div>
                 );
               })}
-
-              {guides.calibration && safeIndex === 0 && paper.widthMm >= 116 ? (
-                <div
-                  className="sheet-ruler"
-                  style={{
-                    left: `${rulerLeft}%`,
-                    width: `${rulerWidth}%`,
-                    bottom: `${rulerBottom}%`,
-                  }}
-                  aria-hidden="true"
-                >
-                  <span>100 mm</span>
-                </div>
-              ) : null}
 
               {guides.pageLabels ? (
                 <span className="sheet-page-label" aria-hidden="true">

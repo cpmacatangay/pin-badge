@@ -64,7 +64,6 @@ export const DEFAULT_GUIDES: Guides = {
   cut: true,
   face: false,
   safe: false,
-  calibration: true,
   pageLabels: true,
 };
 

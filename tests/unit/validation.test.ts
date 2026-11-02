@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { computeEffectiveLayout } from "../../src/lib/layout";
-import { DEFAULT_BADGE, DEFAULT_GUIDES, DEFAULT_PAGE, DEFAULT_TRANSFORM } from "../../src/lib/presets";
+import { DEFAULT_BADGE, DEFAULT_PAGE, DEFAULT_TRANSFORM } from "../../src/lib/presets";
 import type { Artwork, BadgeSetup, PageSetup, SheetLayout } from "../../src/lib/types";
 import {
   canExport,
@@ -36,7 +36,6 @@ function input(overrides: {
     badge: mergedBadge,
     page: mergedPage,
     layout: mergedLayout,
-    guides: DEFAULT_GUIDES,
     transform: overrides.transform ?? DEFAULT_TRANSFORM,
     artwork: overrides.artwork === undefined ? artwork : overrides.artwork,
     effective: computeEffectiveLayout(mergedLayout, mergedPage, mergedBadge),

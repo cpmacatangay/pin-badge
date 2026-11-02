@@ -2,8 +2,8 @@
 
 A browser-based design and print-sheet generator for round pin badges. Choose 25 mm or
 44 mm, frame your artwork inside the printed disc, lay copies out on A4, US Letter, or
-custom paper, and export a millimetre-accurate PDF with optional cutting guides and a
-100 mm calibration ruler.
+custom paper, and export a millimetre-accurate PDF with optional cutting guides. Use the
+separate test print to verify the 100 mm calibration ruler and the cut circle.
 
 Artwork is processed entirely in the browser. There is no upload, no account, and no
 analytics.
@@ -18,9 +18,9 @@ analytics.
 - **Repeat sheets** using automatic maximum fit or an explicit columns × rows grid.
 - **Paper sizes**: A4, US Letter, and custom dimensions entered in mm, cm, or inches.
 - **Automatic pagination** with a correctly centred partial final page.
-- **Exact-size PDF export** at 300 or 600 DPI, with cut line, face ring, safe ring,
-  100 mm ruler, and page labels.
-- **Single-badge test print** for verifying printer scaling and press fit.
+- **Exact-size PDF export** at 300 or 600 DPI, with optional cut line, face ring, safe ring,
+  and page labels.
+- **Single-badge test print** with a 100 mm ruler for verifying printer scaling and press fit.
 - **Local preferences**: settings persist, artwork deliberately does not.
 
 ## Quick start
@@ -115,7 +115,7 @@ tests/
 
 The badge is composed once at the selected export DPI, embedded once in the PDF, and
 reused for every slot. `pdf-lib` builds the page at the exact physical size; cut guides
-and the calibration ruler remain vector. The PDF module is loaded on demand so the
+and the test-print ruler remain vector. The PDF module is loaded on demand so the
 initial app bundle stays small.
 
 ## Browser support
@@ -132,4 +132,3 @@ collapses to a single column on tablets and phones.
 | Download is disabled | No artwork, zero capacity, or invalid dimensions | Check the warnings panel |
 | Artwork looks soft | Effective resolution below 200 DPI | Use a larger source image or reduce zoom |
 | Grid is empty | Manual grid or margins exceed the page | Reduce margin, gap, columns, or rows |
-| Ruler warning | Custom paper narrower than 116 mm | Use wider paper or disable the ruler |

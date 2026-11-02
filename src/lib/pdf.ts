@@ -132,7 +132,10 @@ function drawPageLabels(
   });
 }
 
-export async function buildSheetPdf(input: SheetPdfInput): Promise<Uint8Array> {
+async function buildPdf(
+  input: SheetPdfInput,
+  includeCalibration: boolean,
+): Promise<Uint8Array> {
   const { badge, page, guides, pages, imagePng } = input;
   if (pages.length === 0) {
     throw new Error("There are no pages to export.");
@@ -164,7 +167,7 @@ export async function buildSheetPdf(input: SheetPdfInput): Promise<Uint8Array> {
       drawGuides(pdfPage, slot, heightMm, badge, guides);
     });
 
-    if (guides.calibration && index === 0 && widthMm >= CALIBRATION_MM + 16) {
+    if (includeCalibration && index === 0 && widthMm >= CALIBRATION_MM + 16) {
       drawCalibration(pdfPage, widthMm, font);
     }
 
@@ -186,6 +189,10 @@ export async function buildSheetPdf(input: SheetPdfInput): Promise<Uint8Array> {
   return pdfDoc.save();
 }
 
+export async function buildSheetPdf(input: SheetPdfInput): Promise<Uint8Array> {
+  return buildPdf(input, false);
+}
+
 export async function buildTestSheetPdf(input: TestPdfInput): Promise<Uint8Array> {
   const { badge, page, guides, imagePng } = input;
   const { widthMm, heightMm } = pageSizeMm(page);
@@ -205,11 +212,14 @@ export async function buildTestSheetPdf(input: TestPdfInput): Promise<Uint8Array
 
   const testPage: PageLayout = { index: 0, count: 1, slots: [slot] };
 
-  return buildSheetPdf({
-    badge,
-    page,
-    guides: { ...guides, pageLabels: false, calibration: true },
-    pages: [testPage],
-    imagePng,
-  });
+  return buildPdf(
+    {
+      badge,
+      page,
+      guides: { ...guides, pageLabels: false },
+      pages: [testPage],
+      imagePng,
+    },
+    true,
+  );
 }

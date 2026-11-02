@@ -36,7 +36,6 @@ export interface Guides {
   cut: boolean;
   face: boolean;
   safe: boolean;
-  calibration: boolean;
   pageLabels: boolean;
 }
 

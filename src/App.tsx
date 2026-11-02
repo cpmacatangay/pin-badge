@@ -19,7 +19,6 @@ export default function App() {
   const badge = useStudio((state) => state.badge);
   const page = useStudio((state) => state.page);
   const layout = useStudio((state) => state.layout);
-  const guides = useStudio((state) => state.guides);
   const transform = useStudio((state) => state.transform);
   const artwork = useStudio((state) => state.artwork);
   const exporting = useStudio((state) => state.exporting);
@@ -35,8 +34,8 @@ export default function App() {
   const paper = useMemo(() => pageSizeMm(page), [page]);
 
   const validationInput = useMemo(
-    () => ({ badge, page, layout, guides, transform, artwork, effective }),
-    [badge, page, layout, guides, transform, artwork, effective],
+    () => ({ badge, page, layout, transform, artwork, effective }),
+    [badge, page, layout, transform, artwork, effective],
   );
 
   const warnings = useMemo(() => validateStudio(validationInput), [validationInput]);

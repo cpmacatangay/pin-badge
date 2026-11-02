@@ -1,10 +1,9 @@
-import { MAX_COPIES, MIN_DPI, PRINTER_SAFE_MARGIN_MM, CALIBRATION_MM } from "./presets";
+import { MAX_COPIES, MIN_DPI, PRINTER_SAFE_MARGIN_MM } from "./presets";
 import { pageSizeMm } from "./layout";
 import type {
   Artwork,
   BadgeSetup,
   EffectiveLayout,
-  Guides,
   PageSetup,
   Severity,
   SheetLayout,
@@ -17,7 +16,6 @@ export interface ValidationInput {
   badge: BadgeSetup;
   page: PageSetup;
   layout: SheetLayout;
-  guides: Guides;
   transform: Transform;
   artwork: Artwork | null;
   effective: EffectiveLayout;
@@ -58,7 +56,7 @@ function warning(
 }
 
 export function validateStudio(input: ValidationInput): Warning[] {
-  const { badge, page, layout, guides, transform, artwork, effective } = input;
+  const { badge, page, layout, transform, artwork, effective } = input;
   const warnings: Warning[] = [];
   const paper = pageSizeMm(page);
 
@@ -174,17 +172,6 @@ export function validateStudio(input: ValidationInput): Warning[] {
   if (page.marginMm < 0 || page.gapMm < 0) {
     warnings.push(
       warning("negative-spacing", "error", "Margin and gap cannot be negative."),
-    );
-  }
-
-  if (guides.calibration && paper.widthMm < CALIBRATION_MM + 16) {
-    warnings.push(
-      warning(
-        "ruler-width",
-        "warning",
-        "The page is too narrow for the 100 mm calibration ruler.",
-        "Use at least 116 mm of page width or turn the ruler off.",
-      ),
     );
   }
 

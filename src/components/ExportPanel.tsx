@@ -78,11 +78,6 @@ export function ExportPanel({
             label="Safe ring"
           />
           <Toggle
-            checked={guides.calibration}
-            onChange={(value) => setGuide("calibration", value)}
-            label="100 mm ruler"
-          />
-          <Toggle
             checked={guides.pageLabels}
             onChange={(value) => setGuide("pageLabels", value)}
             label="Page labels"
