@@ -117,23 +117,33 @@ describe("effective layout", () => {
 });
 
 describe("slot geometry", () => {
-  it("centres the grid on the page", () => {
+  it("top-aligns the grid and centres it horizontally", () => {
     const slots = computeSlotPositions(5, 3, DEFAULT_PAGE, badge44);
     expect(slots).toHaveLength(15);
     const first = slots[0];
     const last = slots[slots.length - 1];
     expect(first.xMm).toBeCloseTo(22, 10);
-    expect(first.yMm).toBeCloseTo(9.5, 10);
+    expect(first.yMm).toBeCloseTo(8, 10);
     expect(first.xMm).toBeCloseTo(210 - (last.xMm + 54), 10);
-    expect(first.yMm).toBeCloseTo(297 - (last.yMm + 54), 10);
   });
 
-  it("centres a partial page by its used rows and columns", () => {
-    const slots = computeSlotPositions(1, 5, DEFAULT_PAGE, badge44, 5);
+  it("starts a single-row grid at the top margin", () => {
+    const slots = computeSlotPositions(1, 5, DEFAULT_PAGE, badge25);
     expect(slots).toHaveLength(5);
-    const blockWidth = 5 * 54 + 4 * 2;
+    const blockWidth = 5 * 35 + 4 * 2;
     expect(slots[0].xMm).toBeCloseTo((210 - blockWidth) / 2, 10);
-    expect(slots[0].yMm).toBeCloseTo((297 - 54) / 2, 10);
+    expect(slots.every((slot) => slot.yMm === 8)).toBe(true);
+  });
+
+  it("builds a manual single-row page from the top", () => {
+    const pages = buildPages(
+      layout({ mode: "manual", rows: 1, cols: 5, copies: 5 }),
+      DEFAULT_PAGE,
+      badge25,
+    );
+    expect(pages).toHaveLength(1);
+    expect(pages[0].count).toBe(5);
+    expect(pages[0].slots.every((slot) => slot.yMm === 8)).toBe(true);
   });
 
   it("builds pages whose slot totals equal the copies", () => {
@@ -146,12 +156,13 @@ describe("slot geometry", () => {
     expect(pages.reduce((sum, page) => sum + page.count, 0)).toBe(20);
   });
 
-  it("centres the remaining five badges on the last page", () => {
+  it("top-aligns the remaining five badges on the last page", () => {
     const pages = buildPages(layout({ copies: 20 }), DEFAULT_PAGE, badge44);
     const last = pages[1];
     expect(last.slots).toHaveLength(5);
     const blockWidth = 3 * 54 + 2 * 2;
     expect(last.slots[0].xMm).toBeCloseTo((210 - blockWidth) / 2, 10);
+    expect(last.slots[0].yMm).toBeCloseTo(8, 10);
   });
 
   it("returns no pages when capacity is zero", () => {

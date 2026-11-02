@@ -17,7 +17,7 @@ Vercel Web Analytics records anonymous page views in production; it never receiv
 - **Effective DPI estimate** with a warning below 200 DPI.
 - **Repeat sheets** using automatic maximum fit or an explicit columns × rows grid.
 - **Paper sizes**: A4, US Letter, and custom dimensions entered in mm, cm, or inches.
-- **Automatic pagination** with a correctly centred partial final page.
+- **Automatic pagination** with a top-aligned partial final page.
 - **Exact-size PDF export** at 300 or 600 DPI, with optional cut line, face ring, safe ring,
   and page labels.
 - **Single-badge test print** with a 100 mm ruler for verifying printer scaling and press fit.

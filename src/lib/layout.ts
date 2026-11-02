@@ -115,13 +115,12 @@ export function computeSlotPositions(
 ): Slot[] {
   if (rows <= 0 || cols <= 0 || badge.cutMm <= 0) return [];
 
-  const { widthMm, heightMm } = pageSizeMm(page);
+  const { widthMm } = pageSizeMm(page);
   const gap = Math.max(0, page.gapMm);
   const diameter = badge.cutMm;
   const blockWidth = cols * diameter + (cols - 1) * gap;
-  const blockHeight = rows * diameter + (rows - 1) * gap;
   const startX = (widthMm - blockWidth) / 2;
-  const startY = (heightMm - blockHeight) / 2;
+  const startY = Math.max(0, page.marginMm);
 
   const slots: Slot[] = [];
   for (let row = 0; row < rows; row += 1) {
