@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { AppHeader } from "./components/AppHeader";
 import { ArtworkPanel } from "./components/ArtworkPanel";
 import { BadgePanel } from "./components/BadgePanel";
@@ -148,7 +149,9 @@ export default function App() {
   }
 
   return (
-    <div className="app">
+    <>
+      <Analytics />
+      <div className="app">
       <AppHeader
         context={context}
         canExport={exportReady}
@@ -214,5 +217,6 @@ export default function App() {
         </div>
       </main>
     </div>
+    </>
   );
 }

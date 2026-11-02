@@ -108,12 +108,12 @@ test("exports a single-badge test sheet", async ({ page }) => {
   expect(pdf.getPage(0).getWidth()).toBeCloseTo(595.2756, 3);
 });
 
-test("makes no external requests while designing and exporting", async ({ page }) => {
-  const externalRequests: string[] = [];
+test("loads only Vercel Analytics as a third-party runtime script", async ({ page }) => {
+  const thirdPartyRequests: string[] = [];
   page.on("request", (request) => {
     const url = request.url();
     if (url.startsWith("http") && !url.startsWith("http://127.0.0.1")) {
-      externalRequests.push(url);
+      thirdPartyRequests.push(url);
     }
   });
 
@@ -121,7 +121,10 @@ test("makes no external requests while designing and exporting", async ({ page }
   await uploadArtwork(page);
   await downloadPdf(page);
 
-  expect(externalRequests).toEqual([]);
+  const unexpected = thirdPartyRequests.filter(
+    (url) => !url.startsWith("https://va.vercel-scripts.com/"),
+  );
+  expect(unexpected).toEqual([]);
 });
 
 test("exports with the Ctrl+Enter shortcut", async ({ page }) => {

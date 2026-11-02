@@ -41,7 +41,7 @@ export function AppHeader({
         <span className="topbar-sep" aria-hidden="true" />
         <span className="privacy-note">
           <LockIcon size={12} />
-          Stays on this device
+          Artwork stays local
         </span>
       </div>
 
