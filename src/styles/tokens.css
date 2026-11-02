@@ -1,5 +1,5 @@
 :root {
-  /* Framed sheet — stone frame, white work sheet, teal data */
+  /* Framed sheet — stone frame, white work sheet, purple data */
   --ground: #f1f3f1;
   --surface: #ffffff;
   --raised: #f5f7f5;
@@ -10,8 +10,8 @@
   --text: #131614;
   --muted: #5d625e;
   --faint: #6b706c;
-  --accent: #1b6c80;
-  --accent-soft: #e4eef1;
+  --accent: #6b3fa0; /* taste-skill-ignore: user requested a purple accent */
+  --accent-soft: #efe8f8;
   --primary: #1d1f20;
   --primary-ink: #ffffff;
   --positive: #1e7b4f;

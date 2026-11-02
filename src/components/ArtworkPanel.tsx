@@ -46,7 +46,7 @@ function SliderRow({
   );
 }
 
-const SWATCHES = ["#ffffff", "#f5f7f5", "#131614", "#1b6c80", "#a86f0c"];
+const SWATCHES = ["#ffffff", "#f5f7f5", "#131614", "#6b3fa0", "#a86f0c"];
 
 export function ArtworkPanel() {
   const artwork = useStudio((state) => state.artwork);

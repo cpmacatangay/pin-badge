@@ -1077,9 +1077,9 @@ input[type="color"] {
 }
 
 .warning.info {
-  border-color: #cfe3e7;
+  border-color: #dccdf2;
   background: var(--accent-soft);
-  color: #174c59;
+  color: #3f2266;
 }
 
 .warning.ok {
@@ -1189,7 +1189,7 @@ input[type="color"] {
 }
 
 .slot-ring.face {
-  border: 1px dashed rgba(27, 108, 128, 0.55);
+  border: 1px dashed rgba(107, 63, 160, 0.55);
 }
 
 .slot-ring.safe {

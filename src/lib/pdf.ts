@@ -27,7 +27,7 @@ export interface TestPdfInput {
 
 const GUIDE_WIDTH_PT = 0.4;
 const CUT_COLOR = rgb(0.12, 0.12, 0.12);
-const FACE_COLOR = rgb(0.09, 0.43, 0.78);
+const FACE_COLOR = rgb(0.42, 0.25, 0.63);
 const SAFE_COLOR = rgb(0.78, 0.34, 0.12);
 const LABEL_COLOR = rgb(0.35, 0.33, 0.3);
 
