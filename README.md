@@ -127,6 +127,20 @@ makes no runtime network requests.
 Current Chrome, Edge, Firefox, and Safari. Desktop is the primary experience; the layout
 collapses to a single column on tablets and phones.
 
+## Deploy
+
+This is a static Vite build. Production runs on Vercel at
+**https://cjpins.vercel.app**.
+
+- Framework preset: **Vite**
+- Build command: `npm run build`
+- Output directory: `dist`
+- Node: `24.x`
+- Production branch: `master`
+
+Pushes to `master` deploy automatically. Security headers, including CSP, live in
+`vercel.json`; verify canvas, font, and PDF download behavior after deployment.
+
 ## Troubleshooting
 
 | Symptom | Likely cause | Fix |

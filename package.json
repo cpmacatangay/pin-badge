@@ -4,6 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Design and print pin badge sheets at exact physical size.",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
