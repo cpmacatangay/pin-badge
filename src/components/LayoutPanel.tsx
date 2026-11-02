@@ -72,23 +72,17 @@ export function LayoutPanel({ effective, pageIndex, pageCount }: LayoutPanelProp
   }
 
   return (
-    <section className="panel" aria-labelledby="layout-panel-title">
-      <div className="panel-head">
-        <span className="step" aria-hidden="true">
-          03
+    <section className="settings-section" aria-labelledby="layout-section-title">
+      <div className="section-head">
+        <h2 id="layout-section-title">Sheet layout</h2>
+        <span className="section-meta">
+          {formatDimension(paper.widthMm, "mm")} × {formatDimension(paper.heightMm, "mm")}
         </span>
-        <div>
-          <h2 id="layout-panel-title">Sheet layout</h2>
-          <p className="panel-sub">Choose paper, spacing, and how many copies you need.</p>
-        </div>
       </div>
 
       <div className="field">
         <div className="field-head">
           <label htmlFor="paper-size">Paper</label>
-          <span className="muted-small">
-            {formatDimension(paper.widthMm, "mm")} × {formatDimension(paper.heightMm, "mm")}
-          </span>
         </div>
         <select
           id="paper-size"
@@ -216,27 +210,27 @@ export function LayoutPanel({ effective, pageIndex, pageCount }: LayoutPanelProp
         </div>
       ) : null}
 
-      <div className="layout-readout" aria-live="polite">
-        <div>
+      <div className="readout-strip" aria-live="polite">
+        <div className="readout">
           <span className="readout-label">Grid</span>
-          <strong>
+          <span className="readout-value">
             {effective.cols} × {effective.rows}
-          </strong>
+          </span>
         </div>
-        <div>
+        <div className="readout">
           <span className="readout-label">Per page</span>
-          <strong>{effective.perPage}</strong>
+          <span className="readout-value">{effective.perPage}</span>
         </div>
-        <div>
+        <div className="readout">
           <span className="readout-label">Pages</span>
-          <strong>{pageCount}</strong>
+          <span className="readout-value">{pageCount}</span>
         </div>
       </div>
 
       <div className="field">
         <div className="field-head">
           <label htmlFor="copies">Copies</label>
-          <span className="muted-small">
+          <span className="field-hint">
             {pageCount > 0
               ? `${pageCount} page${pageCount === 1 ? "" : "s"}${
                   pageIndex < pageCount ? ` · viewing ${pageIndex + 1}` : ""
@@ -263,7 +257,7 @@ export function LayoutPanel({ effective, pageIndex, pageCount }: LayoutPanelProp
           </div>
           <button
             type="button"
-            className="btn btn-secondary"
+            className="btn"
             disabled={effective.perPage <= 0}
             onClick={() => setLayoutField("copies", effective.perPage)}
           >

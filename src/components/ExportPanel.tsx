@@ -1,17 +1,11 @@
 import type { Dpi } from "../lib/types";
-import { useStudio } from "../state/store";
-import { DownloadIcon, PrinterIcon } from "./Icons";
+import { resetAllSettings, useStudio } from "../state/store";
 import { Segmented } from "./Segmented";
 import { Toggle } from "./Toggle";
 
 interface ExportPanelProps {
-  canExport: boolean;
-  canTest: boolean;
-  exporting: boolean;
-  error: string | null;
   fileName: string;
-  onExport: () => void;
-  onTestExport: () => void;
+  error: string | null;
 }
 
 const DPI_OPTIONS: readonly { value: `${Dpi}`; label: string }[] = [
@@ -19,30 +13,17 @@ const DPI_OPTIONS: readonly { value: `${Dpi}`; label: string }[] = [
   { value: "600", label: "600 DPI" },
 ];
 
-export function ExportPanel({
-  canExport,
-  canTest,
-  exporting,
-  error,
-  fileName,
-  onExport,
-  onTestExport,
-}: ExportPanelProps) {
+export function ExportPanel({ fileName, error }: ExportPanelProps) {
   const layout = useStudio((state) => state.layout);
   const guides = useStudio((state) => state.guides);
   const setLayoutField = useStudio((state) => state.setLayoutField);
   const setGuide = useStudio((state) => state.setGuide);
 
   return (
-    <section className="panel" aria-labelledby="export-panel-title">
-      <div className="panel-head">
-        <span className="step" aria-hidden="true">
-          04
-        </span>
-        <div>
-          <h2 id="export-panel-title">Export PDF</h2>
-          <p className="panel-sub">Exact page size, one image reused, optional cutting guides.</p>
-        </div>
+    <section className="settings-section" aria-labelledby="export-section-title">
+      <div className="section-head">
+        <h2 id="export-section-title">Export</h2>
+        <span className="section-meta">PDF · exact size</span>
       </div>
 
       <div className="field">
@@ -54,8 +35,7 @@ export function ExportPanel({
           ariaLabel="Export resolution"
         />
         <p className="field-hint">
-          300 DPI is standard. 600 DPI helps line art; the badge image is embedded once,
-          so the file stays small.
+          300 DPI is standard. 600 DPI helps line art; the badge image is embedded once.
         </p>
       </div>
 
@@ -85,36 +65,14 @@ export function ExportPanel({
         </div>
       </div>
 
-      <div className="export-actions">
-        <button
-          type="button"
-          className="btn btn-primary btn-wide"
-          disabled={!canExport || exporting}
-          onClick={onExport}
-        >
-          <DownloadIcon size={17} />
-          {exporting ? "Building PDF…" : "Download PDF"}
-        </button>
-        <button
-          type="button"
-          className="btn btn-secondary btn-wide"
-          disabled={!canTest || exporting}
-          onClick={onTestExport}
-        >
-          <PrinterIcon size={17} />
-          Test print (1 badge + ruler)
-        </button>
-      </div>
-
       <p className="file-name" title={fileName}>
         {fileName}
       </p>
 
-      <div className="print-callout">
-        <strong>Before a batch: print at 100% / Actual size.</strong>
+      <div className="notice">
+        <strong>Print at 100% / Actual size.</strong>
         <span>
-          Turn off “Fit to page”. Measure the 100 mm ruler and the cut circle on the test
-          sheet. If the circle misses your press, adjust the cut diameter.
+          Disable “Fit to page”. Check the ruler and cut circle on the test print before a batch.
         </span>
       </div>
 
@@ -123,6 +81,13 @@ export function ExportPanel({
           {error}
         </p>
       ) : null}
+
+      <div className="inline-actions">
+        <span className="field-hint">Preferences are saved on this device.</span>
+        <button type="button" className="btn ghost" onClick={resetAllSettings}>
+          Reset preferences
+        </button>
+      </div>
     </section>
   );
 }

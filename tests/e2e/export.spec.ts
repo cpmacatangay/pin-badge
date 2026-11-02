@@ -75,19 +75,19 @@ test("supports custom paper entered in centimetres", async ({ page }) => {
 test("switches to the 25 mm preset and keeps settings after reload", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: /25 mm/ }).click();
-  await expect(page.locator(".stat-value").first()).toHaveText("25 mm");
-  await expect(page.locator(".layout-readout").getByText("35", { exact: true })).toBeVisible();
+  await expect(page.locator(".dimension-value").first()).toContainText("25");
+  await expect(page.locator(".readout-strip").getByText("35", { exact: true })).toBeVisible();
 
   await page.reload();
-  await expect(page.locator(".stat-value").first()).toHaveText("25 mm");
-  await expect(page.getByText("Your design goes here")).toBeVisible();
+  await expect(page.locator(".dimension-value").first()).toContainText("25");
+  await expect(page.getByText("Drop your design here")).toBeVisible();
 });
 
 test("shows the finished face without the wrap ring", async ({ page }) => {
   await page.goto("/");
   await uploadArtwork(page);
   await page.getByRole("button", { name: "Finished face" }).click();
-  await expect(page.getByText(/Finished face enlarged/)).toBeVisible();
+  await expect(page.getByText(/Enlarged to fill the view/)).toBeVisible();
   await expect(page.locator(".ring-cut")).toHaveCount(0);
 });
 
@@ -97,7 +97,7 @@ test("exports a single-badge test sheet", async ({ page }) => {
 
   const [download] = await Promise.all([
     page.waitForEvent("download"),
-    page.getByRole("button", { name: "Test print (1 badge + ruler)" }).click(),
+    page.getByRole("button", { name: "Test print" }).click(),
   ]);
   expect(download.suggestedFilename()).toContain("test-print");
   const filePath = await download.path();

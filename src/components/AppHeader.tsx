@@ -1,38 +1,69 @@
-import { LockIcon } from "./Icons";
+import { DownloadIcon, LockIcon, PrinterIcon } from "./Icons";
 
-export function AppHeader() {
+interface AppHeaderProps {
+  context: string;
+  canExport: boolean;
+  canTest: boolean;
+  exporting: boolean;
+  onExport: () => void;
+  onTestExport: () => void;
+}
+
+export function AppHeader({
+  context,
+  canExport,
+  canTest,
+  exporting,
+  onExport,
+  onTestExport,
+}: AppHeaderProps) {
   return (
-    <header className="app-header">
+    <header className="topbar">
       <div className="brand">
         <svg
           className="brand-mark"
-          viewBox="0 0 64 64"
+          viewBox="0 0 24 24"
           role="img"
           aria-label="Pin Badge Studio mark"
         >
-          <circle cx="32" cy="32" r="30" fill="#231f1a" />
-          <circle
-            cx="32"
-            cy="32"
-            r="23"
-            fill="none"
-            stroke="#f6f0e4"
-            strokeWidth="1.4"
-            strokeDasharray="2.2 4"
-          />
-          <circle cx="32" cy="32" r="15.5" fill="#c4562f" />
-          <circle cx="32" cy="32" r="6" fill="#231f1a" />
-          <circle cx="44.5" cy="19.5" r="3.4" fill="#f6f0e4" />
+          <circle cx="12" cy="12" r="10.25" fill="none" stroke="currentColor" strokeWidth="1.4" />
+          <circle cx="12" cy="12" r="6" fill="var(--accent)" />
+          <circle cx="12" cy="12" r="2.1" fill="var(--surface)" />
         </svg>
-        <div>
-          <p className="eyebrow">PRINT-READY PIN BADGES</p>
-          <h1>Pin Badge Studio</h1>
-          <p className="brand-sub">Design once. Print at the right size, every time.</p>
+        <div className="brand-copy">
+          <span className="brand-name">Pin Badge Studio</span>
+          <span className="brand-scope">Local print studio</span>
         </div>
       </div>
-      <div className="privacy-pill">
-        <LockIcon size={15} />
-        <span>Artwork stays on your device</span>
+
+      <div className="topbar-context" aria-label="Current badge setup">
+        <span>{context}</span>
+        <span className="topbar-sep" aria-hidden="true" />
+        <span className="privacy-note">
+          <LockIcon size={12} />
+          Stays on this device
+        </span>
+      </div>
+
+      <div className="topbar-actions">
+        <button
+          type="button"
+          className="btn"
+          disabled={!canTest || exporting}
+          onClick={onTestExport}
+        >
+          <PrinterIcon size={15} />
+          Test print
+        </button>
+        <button
+          type="button"
+          className="btn primary"
+          disabled={!canExport || exporting}
+          onClick={onExport}
+        >
+          <DownloadIcon size={15} />
+          {exporting ? "Building…" : "Download PDF"}
+        </button>
       </div>
     </header>
   );

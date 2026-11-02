@@ -50,12 +50,9 @@ export function SheetPreview({ pages, pageIndex, onPageChange }: SheetPreviewPro
   const safeInset = ((1 - safeRatio) / 2) * 100;
 
   return (
-    <section className="sheet-card" aria-labelledby="sheet-preview-title">
+    <section className="preview-block" aria-labelledby="sheet-preview-title">
       <div className="sheet-head">
-        <div>
-          <p className="eyebrow">PRINT SHEET</p>
-          <h2 id="sheet-preview-title">Sheet preview</h2>
-        </div>
+        <h3 id="sheet-preview-title">Sheet</h3>
         <div className="sheet-nav">
           <button
             type="button"
@@ -64,7 +61,7 @@ export function SheetPreview({ pages, pageIndex, onPageChange }: SheetPreviewPro
             disabled={safeIndex <= 0}
             onClick={() => onPageChange(safeIndex - 1)}
           >
-            <ArrowLeftIcon size={16} />
+            <ArrowLeftIcon size={15} />
           </button>
           <span className="page-counter">
             {pages.length > 0 ? `${safeIndex + 1} / ${pages.length}` : "0 / 0"}
@@ -76,7 +73,7 @@ export function SheetPreview({ pages, pageIndex, onPageChange }: SheetPreviewPro
             disabled={safeIndex >= pages.length - 1}
             onClick={() => onPageChange(safeIndex + 1)}
           >
-            <ArrowRightIcon size={16} />
+            <ArrowRightIcon size={15} />
           </button>
         </div>
       </div>
@@ -136,7 +133,11 @@ export function SheetPreview({ pages, pageIndex, onPageChange }: SheetPreviewPro
 
           <div className="sheet-foot">
             <span>
-              {page.paperId === "custom" ? "Custom" : page.paperId === "letter" ? "US Letter" : "A4"}{" "}
+              {page.paperId === "custom"
+                ? "Custom"
+                : page.paperId === "letter"
+                  ? "US Letter"
+                  : "A4"}{" "}
               · {formatNumber(paper.widthMm, 1)} × {formatNumber(paper.heightMm, 1)} mm
             </span>
             <span>

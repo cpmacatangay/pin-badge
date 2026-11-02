@@ -1,16 +1,7 @@
-import { BADGE_PRESETS, findBadgePreset } from "../lib/presets";
+import { BADGE_PRESETS } from "../lib/presets";
 import { formatNumber } from "../lib/units";
 import { useStudio } from "../state/store";
 import { NumberField } from "./NumberField";
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="stat">
-      <span className="stat-label">{label}</span>
-      <span className="stat-value">{value}</span>
-    </div>
-  );
-}
 
 export function BadgePanel() {
   const badge = useStudio((state) => state.badge);
@@ -19,18 +10,13 @@ export function BadgePanel() {
   const resetBadge = useStudio((state) => state.resetBadge);
 
   const wrapMm = badge.cutMm - badge.faceMm;
-  const safeMm = badge.faceMm - badge.safeInsetMm * 2;
+  const safeMm = Math.max(0, badge.faceMm - badge.safeInsetMm * 2);
 
   return (
-    <section className="panel" aria-labelledby="badge-panel-title">
-      <div className="panel-head">
-        <span className="step" aria-hidden="true">
-          01
-        </span>
-        <div>
-          <h2 id="badge-panel-title">Badge size</h2>
-          <p className="panel-sub">Pick your press, then check the printed disc.</p>
-        </div>
+    <section className="settings-section" aria-labelledby="badge-section-title">
+      <div className="section-head">
+        <h2 id="badge-section-title">Badge size</h2>
+        <span className="section-meta">Press preset</span>
       </div>
 
       <div className="preset-grid">
@@ -56,16 +42,33 @@ export function BadgePanel() {
         })}
       </div>
 
-      <div className="stat-row">
-        <Stat label="Finished face" value={`${formatNumber(badge.faceMm, 1)} mm`} />
-        <Stat label="Cut disc" value={`${formatNumber(badge.cutMm, 1)} mm`} />
-        <Stat label="Wrap ring" value={`${formatNumber(wrapMm, 1)} mm`} />
+      <div className="dimension-strip">
+        <div className="dimension">
+          <span className="dimension-label">Finished face</span>
+          <span className="dimension-value">
+            {formatNumber(badge.faceMm, 1)}
+            <small>mm</small>
+          </span>
+        </div>
+        <div className="dimension">
+          <span className="dimension-label">Cut disc</span>
+          <span className="dimension-value">
+            {formatNumber(badge.cutMm, 1)}
+            <small>mm</small>
+          </span>
+        </div>
+        <div className="dimension">
+          <span className="dimension-label">Wrap ring</span>
+          <span className="dimension-value">
+            {formatNumber(wrapMm, 1)}
+            <small>mm</small>
+          </span>
+        </div>
       </div>
 
-      <p className="wrap-note">
-        <span className="wrap-note-mark" aria-hidden="true" />
-        The outer ring folds around the badge shell. Artwork can run into it, but keep
-        names and fine detail inside the {formatNumber(safeMm, 1)} mm safe circle.
+      <p className="note">
+        The outer ring folds behind the shell. Artwork can run into it; keep names and fine
+        detail inside the <strong>{formatNumber(safeMm, 1)} mm</strong> safe circle.
       </p>
 
       <details className="advanced">
@@ -93,11 +96,8 @@ export function BadgePanel() {
           />
         </div>
         <div className="inline-actions">
-          <span className="muted-small">
-            Preset: {findBadgePreset(badge.presetId)?.faceMm ?? badge.faceMm} mm face /{" "}
-            {findBadgePreset(badge.presetId)?.cutMm ?? badge.cutMm} mm cut
-          </span>
-          <button type="button" className="btn btn-ghost" onClick={resetBadge}>
+          <span className="field-hint">Preset values can be restored at any time.</span>
+          <button type="button" className="btn ghost" onClick={resetBadge}>
             Restore preset
           </button>
         </div>

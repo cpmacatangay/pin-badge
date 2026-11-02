@@ -46,7 +46,7 @@ function SliderRow({
   );
 }
 
-const SWATCHES = ["#ffffff", "#f4ead8", "#231f1a", "#c4562f", "#2f6f68"];
+const SWATCHES = ["#ffffff", "#f5f7f5", "#131614", "#1b6c80", "#a86f0c"];
 
 export function ArtworkPanel() {
   const artwork = useStudio((state) => state.artwork);
@@ -61,7 +61,6 @@ export function ArtworkPanel() {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
-  const [dragging, setDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const dpi = effectiveDpi(artwork, transform, badge.cutMm);
@@ -84,15 +83,10 @@ export function ArtworkPanel() {
   }
 
   return (
-    <section className="panel" aria-labelledby="artwork-panel-title">
-      <div className="panel-head">
-        <span className="step" aria-hidden="true">
-          02
-        </span>
-        <div>
-          <h2 id="artwork-panel-title">Artwork</h2>
-          <p className="panel-sub">Fill the cut disc, then frame the part that matters.</p>
-        </div>
+    <section className="settings-section" aria-labelledby="artwork-section-title">
+      <div className="section-head">
+        <h2 id="artwork-section-title">Artwork</h2>
+        <span className="section-meta">PNG · JPG · WebP · SVG</span>
       </div>
 
       <input
@@ -109,26 +103,20 @@ export function ArtworkPanel() {
       {!artwork ? (
         <div
           className="dropzone"
-          data-dragging={dragging}
-          onDragOver={(event) => {
-            event.preventDefault();
-            setDragging(true);
-          }}
-          onDragLeave={() => setDragging(false)}
+          onDragOver={(event) => event.preventDefault()}
           onDrop={(event) => {
             event.preventDefault();
-            setDragging(false);
             void acceptFile(event.dataTransfer.files?.[0]);
           }}
         >
           <span className="dropzone-icon" aria-hidden="true">
-            <UploadIcon size={22} />
+            <UploadIcon size={20} />
           </span>
           <strong>{loading ? "Preparing image…" : "Drop your design here"}</strong>
-          <span>PNG, JPG, WebP or SVG · up to 25 MB</span>
+          <span>Up to 25 MB. Artwork never leaves this device.</span>
           <button
             type="button"
-            className="btn btn-secondary"
+            className="btn"
             onClick={() => inputRef.current?.click()}
             disabled={loading}
           >
@@ -137,7 +125,7 @@ export function ArtworkPanel() {
         </div>
       ) : (
         <>
-          <div className="artwork-card">
+          <div className="artwork-row">
             <img className="artwork-thumb" src={artwork.objectUrl} alt="" />
             <div className="artwork-meta">
               <strong title={artwork.name}>{artwork.name}</strong>
@@ -152,7 +140,7 @@ export function ArtworkPanel() {
               onClick={() => inputRef.current?.click()}
               aria-label="Replace artwork"
             >
-              <UploadIcon size={16} />
+              <UploadIcon size={15} />
             </button>
             <button
               type="button"
@@ -160,7 +148,7 @@ export function ArtworkPanel() {
               onClick={clearArtwork}
               aria-label="Remove artwork"
             >
-              <TrashIcon size={16} />
+              <TrashIcon size={15} />
             </button>
           </div>
 
@@ -182,26 +170,30 @@ export function ArtworkPanel() {
             onChange={(value) => setTransform({ zoom: value })}
             display={`${Math.round(transform.zoom * 100)}%`}
           />
-          <SliderRow
-            id="artwork-x"
-            label="Horizontal position"
-            value={transform.offsetX}
-            min={-0.5}
-            max={0.5}
-            step={0.005}
-            onChange={(value) => setTransform({ offsetX: value })}
-            display={`${Math.round(transform.offsetX * 100)}%`}
-          />
-          <SliderRow
-            id="artwork-y"
-            label="Vertical position"
-            value={transform.offsetY}
-            min={-0.5}
-            max={0.5}
-            step={0.005}
-            onChange={(value) => setTransform({ offsetY: value })}
-            display={`${Math.round(transform.offsetY * 100)}%`}
-          />
+
+          <div className="field-row">
+            <SliderRow
+              id="artwork-x"
+              label="Position X"
+              value={transform.offsetX}
+              min={-0.5}
+              max={0.5}
+              step={0.005}
+              onChange={(value) => setTransform({ offsetX: value })}
+              display={`${Math.round(transform.offsetX * 100)}%`}
+            />
+            <SliderRow
+              id="artwork-y"
+              label="Position Y"
+              value={transform.offsetY}
+              min={-0.5}
+              max={0.5}
+              step={0.005}
+              onChange={(value) => setTransform({ offsetY: value })}
+              display={`${Math.round(transform.offsetY * 100)}%`}
+            />
+          </div>
+
           <SliderRow
             id="artwork-rotation"
             label="Rotation"
@@ -216,7 +208,7 @@ export function ArtworkPanel() {
           <div className="rotation-actions">
             <button
               type="button"
-              className="btn btn-ghost"
+              className="btn ghost"
               onClick={() =>
                 setTransform({ rotationDeg: normalizeRotation(transform.rotationDeg - 90) })
               }
@@ -225,22 +217,22 @@ export function ArtworkPanel() {
             </button>
             <button
               type="button"
-              className="btn btn-ghost"
+              className="btn ghost"
               onClick={() =>
                 setTransform({ rotationDeg: normalizeRotation(transform.rotationDeg + 90) })
               }
             >
               ↻ 90°
             </button>
-            <button type="button" className="btn btn-ghost" onClick={resetTransform}>
-              <ResetIcon size={14} /> Reset framing
+            <button type="button" className="btn ghost" onClick={resetTransform}>
+              <ResetIcon size={13} /> Reset framing
             </button>
           </div>
 
           <div className="field">
             <div className="field-head">
               <span className="field-label">Background</span>
-              <span className="muted-small">Shows through transparency</span>
+              <span className="field-hint">Shows through transparency</span>
             </div>
             <div className="color-row">
               {SWATCHES.map((color) => (

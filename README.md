@@ -118,6 +118,9 @@ reused for every slot. `pdf-lib` builds the page at the exact physical size; cut
 and the test-print ruler remain vector. The PDF module is loaded on demand so the
 initial app bundle stays small.
 
+IBM Plex Sans and IBM Plex Mono are bundled locally through Fontsource, so the app still
+makes no runtime network requests.
+
 ## Browser support
 
 Current Chrome, Edge, Firefox, and Safari. Desktop is the primary experience; the layout

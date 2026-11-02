@@ -12,7 +12,7 @@ export function Toggle({ checked, onChange, label }: ToggleProps) {
         checked={checked}
         onChange={(event) => onChange(event.target.checked)}
       />
-      <span className="toggle-box" aria-hidden="true" />
+      <span className="toggle-track" aria-hidden="true" />
       <span>{label}</span>
     </label>
   );

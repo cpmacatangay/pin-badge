@@ -3,7 +3,6 @@ import { renderDisc, renderFaceView } from "../lib/compose";
 import { MIN_DPI } from "../lib/presets";
 import { formatDpi, formatNumber } from "../lib/units";
 import { useStudio } from "../state/store";
-import { CircleIcon } from "./Icons";
 import { Segmented } from "./Segmented";
 
 type PreviewMode = "disc" | "face";
@@ -69,7 +68,7 @@ export function BadgePreview({ dpi }: BadgePreviewProps) {
         context.drawImage(disc, 0, 0, CANVAS_PX, CANVAS_PX);
       }
     } catch {
-      // The validation panel reports invalid dimensions.
+      // Validation reports invalid dimensions.
     }
   }, [artwork, transform, background, badge.faceMm, badge.cutMm, mode]);
 
@@ -114,14 +113,11 @@ export function BadgePreview({ dpi }: BadgePreviewProps) {
   }
 
   return (
-    <section className="preview-card" aria-labelledby="badge-preview-title">
-      <div className="preview-head">
-        <div>
-          <p className="eyebrow">LIVE PREVIEW</p>
-          <h2 id="badge-preview-title">Badge</h2>
-        </div>
-        <div className="preview-head-right">
-          <span className="dpi-chip" data-low={lowDpi}>
+    <section className="preview-block" aria-labelledby="badge-preview-title">
+      <div className="block-head">
+        <h3 id="badge-preview-title">Badge</h3>
+        <div className="block-head-right">
+          <span className="dpi-pill" data-low={lowDpi}>
             <span className="status-dot" aria-hidden="true" />
             {formatDpi(dpi)}
           </span>
@@ -149,16 +145,6 @@ export function BadgePreview({ dpi }: BadgePreviewProps) {
             onPointerUp={onPointerUp}
             onPointerCancel={onPointerUp}
           />
-
-          {!artwork ? (
-            <div className="badge-empty">
-              <span className="badge-empty-icon" aria-hidden="true">
-                <CircleIcon size={34} />
-              </span>
-              <strong>Your design goes here</strong>
-              <span>Upload artwork to see exactly what will be visible.</span>
-            </div>
-          ) : null}
 
           <svg
             className="badge-overlay"
@@ -197,22 +183,22 @@ export function BadgePreview({ dpi }: BadgePreviewProps) {
         <div className="legend">
           {mode === "disc" ? (
             <span>
-              <i className="legend-dot cut" /> Cut disc {formatNumber(badge.cutMm, 1)} mm
+              <i className="legend-dot cut" /> Cut {formatNumber(badge.cutMm, 1)} mm
             </span>
           ) : null}
           <span>
-            <i className="legend-dot face" /> Finished face {formatNumber(badge.faceMm, 1)} mm
+            <i className="legend-dot face" /> Face {formatNumber(badge.faceMm, 1)} mm
           </span>
           <span>
-            <i className="legend-dot safe" /> Safe area {formatNumber(safeDiameter, 1)} mm
+            <i className="legend-dot safe" /> Safe {formatNumber(safeDiameter, 1)} mm
           </span>
         </div>
         <p className="preview-note">
           {mode === "disc"
             ? artwork
-              ? "Drag inside the badge to reposition. The outer ring wraps behind the shell."
-              : "The dashed rings show your press dimensions even before artwork is added."
-            : "Finished face enlarged to fill the view. The outer wrap is hidden."}
+              ? "Drag to reposition. The outer ring wraps behind the shell."
+              : "Dashed rings show the press dimensions."
+            : "Enlarged to fill the view; the wrap is hidden."}
         </p>
       </div>
     </section>

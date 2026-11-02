@@ -13,7 +13,8 @@ import { buildPages, computeEffectiveLayout, pageSizeMm } from "./lib/layout";
 import { sheetFileName, testSheetFileName } from "./lib/filename";
 import { yieldToBrowser } from "./lib/timing";
 import { effectiveDpi, canExport, validateStudio } from "./lib/validation";
-import { resetAllSettings, useStudio } from "./state/store";
+import { formatNumber } from "./lib/units";
+import { useStudio } from "./state/store";
 
 export default function App() {
   const badge = useStudio((state) => state.badge);
@@ -55,6 +56,16 @@ export default function App() {
 
   const copies = Math.max(0, Math.floor(layout.copies));
   const fileName = sheetFileName(badge, page, layout, copies);
+  const paperName =
+    page.paperId === "custom"
+      ? "custom paper"
+      : page.paperId === "letter"
+        ? "US Letter"
+        : "A4";
+  const context = `${formatNumber(badge.faceMm, 1)} mm face · ${formatNumber(
+    badge.cutMm,
+    1,
+  )} mm cut · ${effective.cols} × ${effective.rows} on ${paperName}`;
 
   useEffect(() => {
     const lastIndex = Math.max(0, pages.length - 1);
@@ -124,52 +135,54 @@ export default function App() {
   }
 
   return (
-    <div className="app-shell">
-      <AppHeader />
+    <div className="app">
+      <AppHeader
+        context={context}
+        canExport={exportReady}
+        canTest={testReady}
+        exporting={exporting}
+        onExport={() => void handleExport("sheet")}
+        onTestExport={() => void handleExport("test")}
+      />
 
-      <main className="studio-grid">
-        <div className="controls">
-          <BadgePanel />
-          <ArtworkPanel />
-          <LayoutPanel
-            effective={effective}
-            pageIndex={pageIndex}
-            pageCount={pages.length}
-          />
-          <ExportPanel
-            canExport={exportReady}
-            canTest={testReady}
-            exporting={exporting}
-            error={exportError}
-            fileName={fileName}
-            onExport={() => void handleExport("sheet")}
-            onTestExport={() => void handleExport("test")}
-          />
-        </div>
-
+      <main className="sheet">
         <div className="workspace">
-          <BadgePreview dpi={dpi} />
-          <Warnings warnings={warnings} />
-          <SheetPreview
-            pages={pages}
-            pageIndex={pageIndex}
-            onPageChange={setPageIndex}
-          />
+          <div className="controls">
+            <div className="panel-title">
+              <div>
+                <h1>Badge sheet</h1>
+                <p className="sub">
+                  {formatNumber(badge.faceMm, 1)} mm badge · {formatNumber(badge.cutMm, 1)} mm
+                  cut · {effective.perPage} per page
+                </p>
+              </div>
+              <span className="stamp">Saved locally</span>
+            </div>
+
+            <BadgePanel />
+            <ArtworkPanel />
+            <LayoutPanel effective={effective} pageIndex={pageIndex} pageCount={pages.length} />
+            <ExportPanel fileName={fileName} error={exportError} />
+          </div>
+
+          <div className="preview-panel">
+            <div className="preview-title-row">
+              <div>
+                <h2>Preview</h2>
+                <p className="sub">Cut disc, finished face, and the printed sheet</p>
+              </div>
+              <span className="stamp">{layout.dpi} DPI</span>
+            </div>
+
+            <div className="preview-grid">
+              <BadgePreview dpi={dpi} />
+              <SheetPreview pages={pages} pageIndex={pageIndex} onPageChange={setPageIndex} />
+            </div>
+
+            <Warnings warnings={warnings} />
+          </div>
         </div>
       </main>
-
-      <footer className="app-footer">
-        <span>
-          Badge {badge.faceMm} mm · cut {badge.cutMm} mm · {effective.cols} ×{" "}
-          {effective.rows} grid · {copies} copies
-        </span>
-        <span className="footer-privacy">
-          No uploads. No accounts. Print at 100%.
-        </span>
-        <button type="button" className="footer-reset" onClick={resetAllSettings}>
-          Reset preferences
-        </button>
-      </footer>
     </div>
   );
 }
