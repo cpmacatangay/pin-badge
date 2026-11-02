@@ -123,3 +123,16 @@ test("makes no external requests while designing and exporting", async ({ page }
 
   expect(externalRequests).toEqual([]);
 });
+
+test("exports with the Ctrl+Enter shortcut", async ({ page }) => {
+  await page.goto("/");
+  await uploadArtwork(page);
+  await page.getByLabel("Copies").fill("1");
+
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    page.keyboard.press("Control+Enter"),
+  ]);
+
+  expect(download.suggestedFilename()).toContain("1copy");
+});

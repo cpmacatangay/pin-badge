@@ -24,6 +24,7 @@ export default function App() {
   const artwork = useStudio((state) => state.artwork);
   const exporting = useStudio((state) => state.exporting);
   const exportError = useStudio((state) => state.exportError);
+  const setExportError = useStudio((state) => state.setExportError);
 
   const [pageIndex, setPageIndex] = useState(0);
 
@@ -71,6 +72,18 @@ export default function App() {
     const lastIndex = Math.max(0, pages.length - 1);
     if (pageIndex > lastIndex) setPageIndex(lastIndex);
   }, [pages.length, pageIndex]);
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+        event.preventDefault();
+        if (exportReady && !exporting) void handleExport("sheet");
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [exportReady, exporting]);
 
   async function handleExport(mode: "sheet" | "test") {
     const state = useStudio.getState();
@@ -162,7 +175,7 @@ export default function App() {
             <BadgePanel />
             <ArtworkPanel />
             <LayoutPanel effective={effective} pageIndex={pageIndex} pageCount={pages.length} />
-            <ExportPanel fileName={fileName} error={exportError} />
+            <ExportPanel fileName={fileName} />
           </div>
 
           <div className="preview-panel">
@@ -173,6 +186,23 @@ export default function App() {
               </div>
               <span className="stamp">{layout.dpi} DPI</span>
             </div>
+
+            {exportError ? (
+              <div className="warning error export-error" role="alert">
+                <span className="warning-dot" aria-hidden="true" />
+                <div>
+                  <strong>PDF could not be created.</strong>
+                  <span>{exportError}</span>
+                </div>
+                <button
+                  type="button"
+                  className="btn ghost"
+                  onClick={() => setExportError(null)}
+                >
+                  Dismiss
+                </button>
+              </div>
+            ) : null}
 
             <div className="preview-grid">
               <BadgePreview dpi={dpi} />

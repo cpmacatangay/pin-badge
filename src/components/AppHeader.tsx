@@ -60,6 +60,8 @@ export function AppHeader({
           className="btn primary"
           disabled={!canExport || exporting}
           onClick={onExport}
+          aria-keyshortcuts="Control+Enter Meta+Enter"
+          title="Download PDF (Ctrl+Enter)"
         >
           <DownloadIcon size={15} />
           {exporting ? "Building…" : "Download PDF"}

@@ -47,22 +47,6 @@ export function PrinterIcon(props: IconProps) {
   );
 }
 
-export function SparkIcon(props: IconProps) {
-  return (
-    <svg {...base(props)}>
-      <path d="M12 3v3" />
-      <path d="M12 18v3" />
-      <path d="M3 12h3" />
-      <path d="M18 12h3" />
-      <path d="m5.6 5.6 2.1 2.1" />
-      <path d="m16.3 16.3 2.1 2.1" />
-      <path d="m18.4 5.6-2.1 2.1" />
-      <path d="m7.7 16.3-2.1 2.1" />
-      <circle cx="12" cy="12" r="3.2" />
-    </svg>
-  );
-}
-
 export function LockIcon(props: IconProps) {
   return (
     <svg {...base(props)}>
@@ -115,14 +99,6 @@ export function CheckIcon(props: IconProps) {
   return (
     <svg {...base(props)}>
       <path d="m5 12 5 5L20 6" />
-    </svg>
-  );
-}
-
-export function CircleIcon(props: IconProps) {
-  return (
-    <svg {...base(props)}>
-      <circle cx="12" cy="12" r="8" />
     </svg>
   );
 }

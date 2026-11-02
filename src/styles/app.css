@@ -471,15 +471,24 @@
   background: var(--active);
 }
 
-.btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
 .btn.primary {
   border-color: transparent;
   background: var(--primary);
   color: var(--primary-ink);
+}
+
+.btn:disabled {
+  opacity: 1;
+  border-color: var(--border);
+  background: var(--raised);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.btn.primary:disabled {
+  border-color: var(--border);
+  background: var(--raised);
+  color: var(--muted);
 }
 
 .btn.primary:hover:not(:disabled) {
@@ -502,10 +511,6 @@
 .btn.ghost:hover:not(:disabled) {
   background: var(--raised);
   color: var(--text);
-}
-
-.btn-wide {
-  width: 100%;
 }
 
 .icon-button {
@@ -687,8 +692,8 @@ input[type="range"] {
 }
 
 .color-swatch {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   padding: 0;
   border: 1px solid var(--control);
   border-radius: 50%;
@@ -807,13 +812,6 @@ input[type="color"] {
 }
 
 /* Export */
-.export-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 16px;
-}
-
 .file-name {
   margin-top: 12px;
   overflow: hidden;
@@ -1103,6 +1101,15 @@ input[type="color"] {
   display: inline-flex;
   flex: none;
   color: currentColor;
+}
+
+.export-error {
+  align-items: center;
+  margin: 0 0 16px;
+}
+
+.export-error .btn {
+  margin-left: auto;
 }
 
 /* Sheet preview */

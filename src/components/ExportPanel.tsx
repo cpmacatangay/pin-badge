@@ -5,7 +5,6 @@ import { Toggle } from "./Toggle";
 
 interface ExportPanelProps {
   fileName: string;
-  error: string | null;
 }
 
 const DPI_OPTIONS: readonly { value: `${Dpi}`; label: string }[] = [
@@ -13,7 +12,7 @@ const DPI_OPTIONS: readonly { value: `${Dpi}`; label: string }[] = [
   { value: "600", label: "600 DPI" },
 ];
 
-export function ExportPanel({ fileName, error }: ExportPanelProps) {
+export function ExportPanel({ fileName }: ExportPanelProps) {
   const layout = useStudio((state) => state.layout);
   const guides = useStudio((state) => state.guides);
   const setLayoutField = useStudio((state) => state.setLayoutField);
@@ -75,12 +74,6 @@ export function ExportPanel({ fileName, error }: ExportPanelProps) {
           Disable “Fit to page”. Check the ruler and cut circle on the test print before a batch.
         </span>
       </div>
-
-      {error ? (
-        <p className="inline-error" role="alert">
-          {error}
-        </p>
-      ) : null}
 
       <div className="inline-actions">
         <span className="field-hint">Preferences are saved on this device.</span>

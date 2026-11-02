@@ -168,7 +168,3 @@ export function buildPages(
 
   return pages;
 }
-
-export function pageCountLabel(index: number, total: number): string {
-  return `${index + 1} / ${total}`;
-}

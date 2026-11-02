@@ -43,7 +43,8 @@ npm run preview
 2. Upload a PNG, JPG, WebP, or SVG and frame it in the badge preview.
 3. Choose paper, orientation, margin, gap, and copies. Use **Fill sheet** for a full page.
 4. Check the **Sheet preview** and warnings.
-5. Download the PDF, or export a **test print** first.
+5. Download the PDF, or export a **test print** first. Press **Ctrl/⌘ + Enter** to download
+   from the keyboard.
 6. Print at **100% / Actual size**. Do not use “Fit to page”.
 
 ### Verify the print

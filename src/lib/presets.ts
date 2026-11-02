@@ -89,7 +89,6 @@ export const PRINTER_SAFE_MARGIN_MM = 5;
 export const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
 export const MAX_SOURCE_PX = 4096;
 export const MIN_DPI = 200;
-export const TARGET_DPI = 300;
 export const MAX_COPIES = 999;
 export const CALIBRATION_MM = 100;
 

@@ -25,10 +25,7 @@
   --pill-warning-ink: #92400e;
   --pill-neutral-bg: #e9ecea;
   --pill-neutral-ink: #353936;
-  --chart-1: var(--accent);
-  --chart-2: #2f70bb;
   --chart-3: #a86f0c;
-  --chart-muted: #cfd4d0;
 
   --radius-sheet: 16px;
   --radius-card: 8px;
@@ -36,13 +33,9 @@
   --radius-chip: 4px;
 
   --sheet-inset: 8px;
-  --sidebar-width: 232px;
   --gap: 24px;
   --pad: 24px;
-  --card-pad: 20px;
   --control-height: 32px;
-  --row-height: 48px;
-  --nav-row: 32px;
 
   --fs-title: 22px;
   --fs-section: 16px;
@@ -54,7 +47,6 @@
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, monospace; /* taste-skill-ignore: the output PDF filename is an identifier */
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --t-press: 120ms;
   --t-hover: 150ms;
   --t-ui: 200ms;
 
@@ -79,8 +71,35 @@ body {
   background: var(--ground);
   color: var(--text);
   font: var(--fs-body) / 20px var(--font);
+  caret-color: var(--accent);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--control) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: var(--control);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+  background-clip: padding-box;
 }
 
 h1,
